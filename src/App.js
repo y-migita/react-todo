@@ -1,23 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
 
 function App() {
+  const [inputText, setInputText] = useState("");
+  const [todos, setTodos] = useState([]);
+
+  const handleInput = (event) => {
+    setInputText(event.target.value);
+  };
+  const postTodo = () => {
+    setTodos([...todos, inputText]);
+    setInputText("");
+  };
+  const deleteTodo = (index) => {
+    setTodos(todos.filter((_todo, todoIndex) => todoIndex !== index));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div>
+        <input
+          type="text"
+          name="inputText"
+          value={inputText}
+          onChange={handleInput}
+        />
+        <button type="button" onClick={postTodo}>
+          投稿
+        </button>
+      </div>
+      <div>
+        <ul>
+          {todos.map((todo, index) => {
+            return (
+              <li key={index}>
+                <p>{todo}</p>
+                <button onClick={() => deleteTodo(index)}>削除</button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 }
